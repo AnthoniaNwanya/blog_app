@@ -4,7 +4,7 @@ const commentModel = require("../models/comment.model");
 const createComment = async (req, res) => {
   const blogID = req.query.id;
   const findBlog = await blogModel.findById(blogID);
-  const commenter = req.User.validUser_id;
+  const commenter = req.body.name;
 
   const addComment = await commentModel.create({
     comment: req.body.comment,
@@ -13,6 +13,11 @@ const createComment = async (req, res) => {
     commenter: commenter,
   });
 
+  // In the absence of a user interface to incorporate the like button, this like logic was applied
+  if(addComment.comment.includes("like")){
+    findBlog.likes += 1;
+    await findBlog.save();
+    } 
   const saveComment = await addComment.save();
 
   // Add and save created comment in "comments" field of Blog schema.
