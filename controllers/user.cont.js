@@ -12,7 +12,7 @@ const getUsers = async (req, res) => {
 const getUsersById = async (req, res) => {
   const reqUser = req.query.id;
   const foundUser = await userModel
-    .findById({ id: reqUser })
+    .findById(reqUser)
     .populate("blogs", { title: 1 });
   if (foundUser) {
     res.status(200).send(foundUser);
