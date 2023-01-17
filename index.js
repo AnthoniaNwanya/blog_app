@@ -22,6 +22,10 @@ app.use(function (err, req, res, next) {
   res.status(500).send("Something went wrong");
 });
 
+app.use("*", (req, res) => {
+  return res.status(404).json({ message: "route not found" });
+});
+
 app.listen(PORT, () => {
   console.log("Server started listening on,", PORT);
 });
