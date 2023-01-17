@@ -1,9 +1,27 @@
-const express = require("express")
+const express = require("express");
+const { mongooseDB } = require("./database");
+const UserRouter = require("./routers/user.router");
+const BlogRouter = require("./routers/blog.router");
+const CommentRouter = require("./routers/comment.router");
 
-const app = express()
+const PORT = process.env.PORT;
+
 require("dotenv").config();
-const PORT = process.env.PORT 
+mongooseDB();
+
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use("/blogapp/user", UserRouter);
+app.use("/blogapp/blog", BlogRouter);
+app.use("/blogapp/comment", CommentRouter);
+
+app.use(function (err, req, res, next) {
+  console.log(err);
+  res.status(500).send("Something went wrong");
+});
 
 app.listen(PORT, () => {
-    console.log("Server started listening on," , PORT)
-} )
+  console.log("Server started listening on,", PORT);
+});
