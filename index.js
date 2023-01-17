@@ -21,7 +21,9 @@ app.use(function (err, req, res, next) {
   console.log(err);
   res.status(500).send("Something went wrong");
 });
-
+app.get("/", (req, res) => {
+  res.send("Welcome to Blog App");
+});
 app.use("*", (req, res) => {
   return res.status(404).json({ message: "route not found" });
 });
