@@ -8,8 +8,8 @@ const { blogOwnerCheck } = require("../middleware/verifyOwner");
 
 router.post("/", useToken, controller.createBlog);
 router.get("/", controller.getBlogs);
-router.get("/id/:id?", controller.getBlogById);
-router.put("/:id?", useToken, blogOwnerCheck, controller.updateBlog);
-router.delete("/:id?", useToken, blogOwnerCheck, controller.deleteBlog);
+router.get("/:id", controller.getBlogById);
+router.put("/:id", useToken, blogOwnerCheck, controller.updateBlog);
+router.delete("/:id", useToken, blogOwnerCheck, controller.deleteBlog);
 
 module.exports = router;

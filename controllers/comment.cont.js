@@ -2,12 +2,13 @@ const blogModel = require("../models/blog.model");
 const commentModel = require("../models/comment.model");
 
 const createComment = async (req, res) => {
-  const blogID = req.query.id;
+  const blogID = req.params.id;
   const findBlog = await blogModel.findById(blogID);
-  const commenter = req.body.name;
+  const commenter = req.body.name
+  const comment = req.body.comment;
 
   const addComment = await commentModel.create({
-    comment: req.body.comment,
+    comment: comment,
     timestamp: Date.now(),
     blog: findBlog,
     commenter: commenter,
@@ -18,6 +19,10 @@ const createComment = async (req, res) => {
     findBlog.likes += 1;
     await findBlog.save();
     } 
+  if(addComment){
+    findBlog.views += 1;
+    await findBlog.save();
+    }
   const saveComment = await addComment.save();
 
   // Add and save created comment in "comments" field of Blog schema.
@@ -36,7 +41,7 @@ const getComments = async (req, res) => {
 };
 
 const getCommentById = async (req, res) => {
-  const id = req.query.id;
+  const id = req.params.id;
   const commentId = await blogModel
     .findById(id)
     .populate("blog", { title: 1, content: 1, author: 1 });
@@ -45,7 +50,7 @@ const getCommentById = async (req, res) => {
 };
 
 const updateComment = async (req, res) => {
-  const id = req.query.id;
+  const id = req.params.id;
   const commentUpdate = req.body;
   const updatedComment = await commentModel.findByIdAndUpdate(
     id,
@@ -59,7 +64,7 @@ const updateComment = async (req, res) => {
 };
 
 const deleteComment = async (req, res) => {
-  const id = req.query.id;
+  const id = req.params.id;
   const delComment = await commentModel.findByIdAndDelete(id);
   return res
     .status(200)

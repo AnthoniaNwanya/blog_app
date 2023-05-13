@@ -30,19 +30,26 @@ const getBlogs = async (req, res) => {
   const comments = await commentModel.find({});
   const getBlog = await blogModel
     .find({})
-    .populate("author", { _id: 1, full_name: 1 })
+    .populate("author", { full_name: 1 })
     .populate("comments", { commenter: 1, comment: 1 });
+
+    if(!getBlog){
+      res.send("Currently, there are no blogs found. Create a blog?")
+    }
 
   return res.status(200).send({ status: true, getBlog });
 };
 
 const getBlogById = async (req, res) => {
-  const id = req.query.id;
+  const id = req.params.id;
   const blogId = await blogModel
     .findById(id)
     .populate("author", { _id: 1, full_name: 1 })
     .populate("comments", { commenter: 1, comment: 1 });
 
+  if(!blogId){
+    res.send("Blog does not exist")
+  }
   // Increment view count when a blog is requested
   blogId.views += 1;
   await blogId.save();
@@ -51,7 +58,7 @@ const getBlogById = async (req, res) => {
 };
 
 const updateBlog = async (req, res) => {
-  const id = req.query.id;
+  const id = req.params.id;
   const blogUpdate = req.body;
   const updatedBlog = await blogModel.findByIdAndUpdate(id, blogUpdate, {
     new: true,
@@ -63,7 +70,7 @@ const updateBlog = async (req, res) => {
 };
 
 const deleteBlog = async (req, res) => {
-  const id = req.query.id;
+  const id = req.params.id;
   const delBlog = await blogModel.findByIdAndDelete(id);
   return res
     .status(200)

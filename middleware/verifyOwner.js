@@ -10,7 +10,7 @@ const blogOwnerCheck = async (req, res, next) => {
   });
 
   // Check if the requested blog id is contained in iterated blogs
-  const checkInclusion = mapUserToBlog.includes(req.query.id);
+  const checkInclusion = mapUserToBlog.includes(req.params.id);
 
   if (!checkInclusion) {
     return res
@@ -27,7 +27,7 @@ const authorCheck = async (req, res, next) => {
   const currUserId = currUser._id.toString();
 
   // Check if the user making the request is the account owner
-  if (currUserId !== req.query.id) {
+  if (currUserId !== req.params.id) {
     return res
       .status(403)
       .send("Only account owners are authorized to perform this action");

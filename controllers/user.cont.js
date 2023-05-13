@@ -10,7 +10,7 @@ const getUsers = async (req, res) => {
 };
 
 const getUsersById = async (req, res) => {
-  const reqUser = req.query.id;
+  const reqUser = req.params.id;
   const foundUser = await userModel
     .findById(reqUser)
     .populate("blogs", { title: 1 });
@@ -22,7 +22,7 @@ const getUsersById = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  const id = req.query.id;
+  const id = req.params.id;
   const userUpdate = req.body;
 
   try {
@@ -40,7 +40,7 @@ const updateUser = async (req, res) => {
 };
 
 const deleteUser = async (req, res) => {
-  const id = req.query.id;
+  const id = req.params.id;
   const deletedUser = await userModel.findByIdAndDelete(id);
 
   if (!deletedUser) {

@@ -10,8 +10,8 @@ const { authorCheck } = require("../middleware/verifyOwner");
 router.post("/signup", auth.signup);
 router.post("/signin", auth.signin);
 router.get("/", controller.getUsers);
-router.get("/id/:id?", controller.getUsersById);
-router.put("/:id?", useToken, authorCheck, controller.updateUser);
-router.delete("/:id?", useToken, authorCheck, controller.deleteUser);
+router.get("/:id", controller.getUsersById);
+router.put("/:id", useToken, authorCheck, controller.updateUser);
+router.delete("/:id", useToken, authorCheck, controller.deleteUser);
 
 module.exports = router;
